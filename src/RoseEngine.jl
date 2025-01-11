@@ -1,5 +1,6 @@
 module RoseEngine
 
-# Write your package code here.
+include("wave_functions.jl")
+include("rotor.jl")
 
 end
