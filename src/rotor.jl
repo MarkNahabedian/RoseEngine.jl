@@ -1,4 +1,4 @@
-export Rotor, full_cycle_count
+export Rotor, full_cycle_count, input_range
 
 
 """
@@ -37,6 +37,16 @@ that its `wave_function` returns to its starting point (same angle and
 radius).  This is an integer number of full rotations of the rootor.
 """
 full_cycle_count(r::Rotor) = r.waves_per_rotation.num * r.waves_per_rotation.den
+
+
+"""
+    input_range(::Rotor, step_angle::Rational)
+
+Returns a Julia `AbstractRange` that will fully generate the design of
+the `Rotor` when the rotor function is applied to the values of that
+range.
+"""
+input_range(r::Rotor, step_angle::Rational) = 0 : step_angle : full_cycle_count(r)
 
 
 function (r::Rotor)(angle)
