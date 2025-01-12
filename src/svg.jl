@@ -14,7 +14,7 @@ attribute of an SVG `path` to draw the design specified by the
 `Rotor`.  Also returns the minimum and maximum x and y coordinates of
 the path.
 """
-function svg_path_for_rotor(rotor::Rotor, step_angle::Rational)
+function svg_path_for_rotor(rotor::AbstractRotor, step_angle::Rational)
     points = []
     for angle in input_range(rotor, step_angle)
         radius = rotor(angle)
@@ -36,9 +36,9 @@ function svg_path_for_rotor(rotor::Rotor, step_angle::Rational)
 end
 
 
-render_rotors(rotor::Rotor, step_angle; kwargs...) = render_rotors([rotor], step_angle; kwargs...)
+render_rotors(rotor::AbstractRotor, step_angle; kwargs...) = render_rotors([rotor], step_angle; kwargs...)
 
-function render_rotors(rotors::Vector{Rotor}, step_angle; debug=false)
+function render_rotors(rotors::Vector{<:AbstractRotor}, step_angle; debug=false)
     prf = map(r -> svg_path_for_rotor(r, step_angle), rotors)
     path_ds = map(first, prf)
     min_x = minimum(p -> p[2], prf)
@@ -47,7 +47,7 @@ function render_rotors(rotors::Vector{Rotor}, step_angle; debug=false)
     max_y = maximum(p -> p[5], prf)
     margin = max(max_x - min_x, max_y - min_y) * 0.05
     rotor_radii = if debug
-        unique(map(r -> r.radius, rotors))
+        unique(map(r -> radius(r), rotors))
     else
         []
     end

@@ -21,6 +21,12 @@ rotation of the spindle - to the radius of the cutter from the
 spindle's axis.  This function is implemented by the [`Rotor`](@ref)
 struct.
 
+Because each of the cams on a rose engine has an integer number of
+lobes, the rose engine also has a way to offset the cam from the axis
+of rotation by an initial phase angle.  A rose engine also has a way
+to add an initial phase angle to the axis of rotation.  We model this
+using [`PhasedRotor`](@ref).
+
 
 ## Wave Functions
 
@@ -45,8 +51,12 @@ can write one from this package:
 
 ```@example SVG-example-1
 using RoseEngine
-rotor = Rotor(3, 3//4, 13//19, triangle_wave)
-render_rotors(joinpath(@__DIR__, "SVG-example-1.svg"), rotor, 1//16)
+rotor = Rotor(3, 3//4, 8, triangle_wave)
+render_rotors(joinpath(@__DIR__, "SVG-example-1.svg"),
+              map([0, 1//32, 2//32, 3//32]) do phase
+                  PhasedRotor(rotor, phase)
+              end,
+              1//64)
 ```
 
 Here's the resulting file:
