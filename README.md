@@ -12,14 +12,14 @@ YouTube ClickSpring channel.
 An actual Rose engine costs a lot, but I thought that maybe I could
 draw the art in software and cut it on a CNC router.
 
-A rose engines is similar to a lathe but has cams on the spindle which
+A rose engine is similar to a lathe but has cams on the spindle which
 can control the position of the cross slide and thus the radius of the
 cutter.
 
 It can be modeled by a function that maps a parametric angle, the
 rotation of the spindle, to the radius of the cutter from the
 spindle's center.  This function could be implemented by a struct with
-fields for the radius and amplitude of the cutters path and the number
+fields for the radius and amplitude of the cutter's path and the number
 of full spindle rotations and cycles of the wave to cut a complete
 pattern.  The struct might be called a Rotor.
 
