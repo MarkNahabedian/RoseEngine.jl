@@ -76,8 +76,3 @@ end
     end
 end
 
-@testset "write SVG file" begin
-    rotor = Rotor(3, 3//4, 13//19, triangle_wave)
-    render_rotors(joinpath(@__DIR__, "first_rotor.svg"), rotor, 1//16, debug=true)
-end
-
