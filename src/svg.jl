@@ -19,12 +19,15 @@ function svg_path_for_rotor(rotor::AbstractRotor, step_angle::Rational)
     for angle in input_range(rotor, step_angle)
         radius = rotor(angle)
         x, y = radius * [ cos(2 * pi * angle), sin(2 * pi * angle) ]
+        x = round(x; digits = 5)
+        y = round(y; digits = 5)
         push!(points, (x, y))
     end
     min_x = minimum(p -> p[1], points)
     max_x = maximum(p -> p[1], points)
     min_y = minimum(p -> p[2], points)
     max_y = maximum(p -> p[2], points)
+    
     path = let
         p = points[1]
         [ "M $(p[1]) $(p[2])" ]
@@ -57,10 +60,16 @@ function render_rotors(rotors::Vector{<:AbstractRotor}, step_angle; debug=false)
                                 cx=0, cy=0, r=r,
                                 style="stroke: orange; fill: none; stroke-width: 1; vector-effect: non-scaling-stroke;")
                 end...,
-                map(path_ds) do d
-                    XML.Element("path",
-                                d=d,
-                                style="stroke: blue; fill: none; stroke-width: 1; vector-effect: non-scaling-stroke;",)
+                map(zip(path_ds, rotors)) do (d, rotor)
+                    XML.Element("g",
+                                XML.Comment(" $rotor "),
+                                XML.Element("path",
+                                            d=d,
+                                            style=join(["stroke: blue",
+                                                        "fill: none",
+                                                        "stroke-width: 1",
+                                                        "vector-effect: non-scaling-stroke"
+                                                        ], "; ")))
                 end...;
                 xmlns=SVG_NAMESPACE,
                 viewBox=@sprintf("%3.3f %3.3f %3.3f %3.3f",
