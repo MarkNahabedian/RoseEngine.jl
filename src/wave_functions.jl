@@ -1,4 +1,4 @@
-export triangle_wave
+export triangle_wave, sine_wave
 
 
 """
@@ -18,4 +18,13 @@ function triangle_wave(p)
         error("Parameter $p must be >= 0 and <= 1")
     end
 end
+
+
+"""
+    sine_wave(a)
+
+`sine_wave` implements a sine wave suitable for use as the
+`wave_function` of [`Rotor`](@ref).
+"""
+sine_wave(p) = sin(2 * pi * p)
 
