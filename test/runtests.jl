@@ -6,6 +6,13 @@ using Test
     @test triangle_wave.(0 : 1//8 : 1) == [ 0, 1//2, 1, 1//2, 0, -1//2, -1, -1//2, 0 ]
 end
 
+@testset "full_cycle_count" begin
+    @test full_cycle_count(Rotor(1, 1//4, 1, triangle_wave)) == 1
+    @test full_cycle_count(Rotor(1, 1//4, 2, triangle_wave)) == 2
+    @test full_cycle_count(Rotor(1, 1//4, 1//2, triangle_wave)) == 2
+    @test full_cycle_count(Rotor(1, 2//5, 2//5, triangle_wave)) == 10
+end
+
 @testset "Rotor with triangle wave" begin
     let
         rotor = Rotor(3, 1, 1, triangle_wave)

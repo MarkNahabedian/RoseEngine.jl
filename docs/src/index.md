@@ -34,6 +34,7 @@ using [`PhasedRotor`](@ref).
 
 ```@docs
 triangle_wave
+sine_wave
 ```
 
 ## Writing an SVG File
@@ -49,21 +50,38 @@ starting position.  This is performed by [`svg_path_for_rotor`](@ref).
 My CNC router (Shaper Origin) is driven by an SVG file.  Here's how I
 can write one from this package:
 
-```@example SVG-example-1
+```@example svg-example-1
 using RoseEngine
-rotor = Rotor(3, 3//4, 8, triangle_wave)
-render_rotors(joinpath(@__DIR__, "SVG-example-1.svg"),
-              map([0, 1//32, 2//32, 3//32]) do phase
+rotor = Rotor(3, 1//2, 1//8, sine_wave)
+render_rotors(joinpath(@__DIR__, "svg-example-1.svg"),
+              map([ 0, 1//32, 2//32, 3//32 ]) do phase
                   PhasedRotor(rotor, phase)
               end,
-              1//64)
+              1//256)
 ```
 
 Here's the resulting file:
 
 ```@raw html
-<img src="SVG-example-1.svg"/>
+<img src="svg-example-1.svg"
+     width="50%"/>
 ```
+
+
+```@example svg-example-2
+using RoseEngine
+rotor = Rotor(3, 1, 43//5, triangle_wave)
+render_rotors(joinpath(@__DIR__, "svg-example-2.svg"),
+              rotor,
+              1//256)
+```
+
+```@raw html
+<img src="svg-example-2.svg"
+     width="50%"/>
+```
+
+
 
 
 ## Index

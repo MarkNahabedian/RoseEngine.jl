@@ -45,30 +45,31 @@ Returns the number of cycles that the `Rotor` should *rotate* such
 that its `wave_function` returns to its starting point (same angle and
 radius).  This is an integer number of full rotations of the rootor.
 """
-full_cycle_count(r::AbstractRotor) = waves_per_rotation(r).num * waves_per_rotation(r).den
+full_cycle_count(r::AbstractRotor) = lcm(waves_per_rotation(r).num,
+                                         waves_per_rotation(r).den)
 
 
 """
-    input_range(::Rotor, step_angle::Rational)
+    input_range(::AbstractRotor, step_angle::Rational)
 
 Returns a Julia `AbstractRange` that will fully generate the design of
 the `Rotor` when the rotor function is applied to the values of that
 range.
 """
-input_range(r::Rotor, step_angle::Rational) = 0 : step_angle : full_cycle_count(r)
+input_range(r::AbstractRotor, step_angle::Rational) = 0 : step_angle : full_cycle_count(r)
 
 
-function (r::AbstractRotor)(angle)
+function (r::Rotor)(angle)
     radius(r) + amplitude(r) * wave_function(r)((angle // waves_per_rotation(r)) % 1)
 end
 
 
-```
+"""
     PhasedRotor(::Rotor, initial_phase_angle)
 
 PhasedRotor encapsulates a Rotor to provide an initial phase angle
 offset when drawing the rotor.
-```
+"""
 struct PhasedRotor <: AbstractRotor
     rotor::Rotor
     initial_phase_angle::Rational
@@ -80,6 +81,8 @@ waves_per_rotation(r::PhasedRotor) = waves_per_rotation(r.rotor)
 wave_function(r::PhasedRotor) = wave_function(r.rotor)
 
 
-input_range(r::PhasedRotor, step_angle::Rational) =
-    (0 : step_angle : full_cycle_count(r)) .+ r.initial_phase_angle
+function (r::PhasedRotor)(angle)
+    radius(r) + amplitude(r) *
+        wave_function(r)(((angle + r.initial_phase_angle) // waves_per_rotation(r)) % 1)
+end
 
