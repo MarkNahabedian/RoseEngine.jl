@@ -6,6 +6,7 @@ export render_rotors
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 
+
 """
     svg_path_for_rotor(rotor::Rotor, step_angle::Rational)
 
@@ -50,16 +51,36 @@ function render_rotors(rotors::Vector{<:AbstractRotor}, step_angle; debug=false)
     max_y = maximum(p -> p[5], prf)
     margin = max(max_x - min_x, max_y - min_y) * 0.05
     rotor_radii = if debug
-        unique(map(r -> radius(r), rotors))
+        unique(map(rotor -> radius(rotor), rotors))
+    else
+        []
+    end
+    rotor_peaks = if debug
+        unique(map(rotor -> radius(rotor) + amplitude(rotor), rotors))
+    else
+        []
+    end
+    rotor_troughs = if debug
+        unique(map(rotor -> radius(rotor) - amplitude(rotor), rotors))
     else
         []
     end
     XML.Element("svg",
                 map(rotor_radii) do r
                     XML.Element("circle";
-                                cx=0, cy=0, r=r,
-                                style="stroke: orange; fill: none; stroke-width: 1; vector-effect: non-scaling-stroke;")
+                                cx=0, cy=0, r=float(r),
+                                style="stroke: yellow; fill: none; stroke-width: 1; vector-effect: non-scaling-stroke;")
                 end...,
+                map(rotor_peaks) do r
+                    XML.Element("circle";
+                                cx=0, cy=0, r=float(r),
+                                style="stroke: orange; fill: none; stroke-width: 1; vector-effect: non-scaling-stroke;")
+                end...,                    
+                map(rotor_troughs) do r
+                    XML.Element("circle";
+                                cx=0, cy=0, r=float(r),
+                                style="stroke: orange; fill: none; stroke-width: 1; vector-effect: non-scaling-stroke;")
+                end...,                    
                 map(zip(path_ds, rotors)) do (d, rotor)
                     XML.Element("g",
                                 XML.Comment(" $rotor "),
