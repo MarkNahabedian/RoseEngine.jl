@@ -1,6 +1,7 @@
 using RoseEngine
 using Documenter
 
+
 DocMeta.setdocmeta!(RoseEngine, :DocTestSetup, :(using RoseEngine); recursive=true)
 
 makedocs(;
@@ -14,6 +15,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Check Wave Amplitudes" => "check_wave_amplitudes.md"
     ],
 )
 

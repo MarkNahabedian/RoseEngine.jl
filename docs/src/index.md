@@ -50,6 +50,7 @@ starting position.  This is performed by [`svg_path_for_rotor`](@ref).
 My CNC router (Shaper Origin) is driven by an SVG file.  Here's how I
 can write one from this package:
 
+
 ```@example svg-example-1
 using RoseEngine
 rotor = Rotor(3, 1//2, 1//8, sine_wave)
@@ -67,10 +68,9 @@ Here's the resulting file:
      width="50%"/>
 ```
 
-
 ```@example svg-example-2
 using RoseEngine
-rotor = Rotor(3, 1, 43//5, triangle_wave)
+rotor = Rotor(3, 1//2, 17//16, sine_wave)
 render_rotors(joinpath(@__DIR__, "svg-example-2.svg"),
               rotor,
               1//256)
@@ -78,6 +78,19 @@ render_rotors(joinpath(@__DIR__, "svg-example-2.svg"),
 
 ```@raw html
 <img src="svg-example-2.svg"
+     width="50%"/>
+```
+
+```@example svg-example-3
+using RoseEngine
+rotor = Rotor(3, 1, 43//5, triangle_wave)
+render_rotors(joinpath(@__DIR__, "svg-example-3.svg"),
+              rotor,
+              1//256)
+```
+
+```@raw html
+<img src="svg-example-3.svg"
      width="50%"/>
 ```
 
