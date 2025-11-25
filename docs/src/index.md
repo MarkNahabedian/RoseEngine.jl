@@ -70,7 +70,7 @@ Here's the resulting file:
 
 ```@example svg-example-2
 using RoseEngine
-rotor = Rotor(3, 1//2, 17//16, sine_wave)
+rotor = Rotor(3, 1, 13//29, sine_wave)
 render_rotors(joinpath(@__DIR__, "svg-example-2.svg"),
               rotor,
               1//256)
